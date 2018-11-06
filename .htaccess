@@ -1,0 +1,9 @@
+RewriteEngine On
+#RewriteBase /copycat/
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteRule ^(.*)$ index.php/$1
+RewriteRule .index$ ./ [R,NC,L]
+Options All -Indexes
+Order Allow,Deny  
+Allow from all

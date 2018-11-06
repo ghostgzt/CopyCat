@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<link rel="shortcut icon" href="favicon.ico" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="keywords" content="" />
+		<meta name="description" content="" />
+		<title>
+			设定 - Copy Cat | Powered By Gentle
+		</title>
+		<link rel="stylesheet" href="resources/css/style.css" type="text/css" media="screen"
+		charset="utf-8" />	
+		<script src="resources/js/jquery.js" type="text/javascript" charset="utf-8">
+		</script>
+		<script src="resources/js/global.js" type="text/javascript" charset="utf-8">
+		</script>
+		<script src="resources/js/modal.js" type="text/javascript" charset="utf-8">
+		</script>
+		<script src="resources/js/md5.js" type="text/javascript" charset="utf-8">
+		</script>
+		<script src="resources/js/base64.js" type="text/javascript" charset="utf-8">
+		</script>
+		<script>
+			var xhash = window.location.hash.split("|");
+			if (xhash[0]) {
+				var tpl = xhash[0].substring(1);
+			} else {
+				var tpl = "settings";
+			}
+
+			if ((tpl == "articles") || (tpl == "file") || (tpl == "db") || (tpl == "shell") || (tpl == "tool") || (tpl == "site") || (tpl == "help")) {
+				var isss = 1;
+			}
+		</script>
+		<script src="resources/js/functions.js" type="text/javascript" charset="utf-8">
+		</script>
+		<script>
+			try {
+				$.get("resources/tpl/" + tpl + ".eval.tpl",
+				function(data, textStatus) {
+					if (data) {
+						eval(data);
+					}
+				});
+			} catch(e) {}
+		</script>
+	</head>
+	<body>
+		<div id="header">
+			<div class="col w5 bottomlast">
+				<a href="" class="logo">
+					<img src="resources/images/cat.gif" alt="Logo" />
+					<img src="resources/images/logo.gif" alt="Logo" />
+				</a>
+			</div>
+			<div class="col w5 last right bottomlast">
+				<p class="last">
+					<b>
+						&gt;
+						<a href="../" target="_blank">Live Site</a>
+						<a href="javascript:void(0);"
+						onclick="var xx=prompt('请输入需要转义的字符:','');if(xx){getzy(xx);}">转义助手</a>		
+						<a href="javascript:void(0);"
+						onclick="window.open('index.html#file|runcode','_blank');">代码测试</a>	
+					</b>
+					&nbsp;Logged in as
+					<span class="strong" id="logname">
+						
+					</span>
+					<a href="javascript:void(0);" onclick="logout();">
+						Logout
+					</a>
+				</p>
+			</div>
+			<div class="clear">
+			</div>
+		</div>
+		<div id="wrapper">
+			<div id="minwidth">
+				<div id="holder">
+					<div id="menu">
+						<div id="left">
+						</div>
+						<div id="right">
+						</div>
+						<ul>
+							<li>
+								<a id="c1" href="javascript:void(0);" onclick="window.location.href='#settings';window.location.reload();">
+									<span>
+										设定
+									</span>
+								</a>
+							</li>
+							<li>
+								<a id="c2" href="javascript:void(0);" onclick="window.location.href='#users';window.location.reload();">
+									<span>
+										配置
+									</span>
+								</a>
+							</li>
+							<li>
+								<a id="c3" href="javascript:void(0);" onclick="window.location.href='#articles';window.location.reload();">
+									<span>
+										模板
+									</span>
+								</a>
+							</li>
+							<li>
+								<a id="c4" href="javascript:void(0);" onclick="window.location.href='#file';window.location.reload();">
+									<span>
+										文件
+									</span>
+								</a>
+							</li>
+							<li>
+								<a id="c5" href="javascript:void(0);" onclick="window.location.href='#db';window.location.reload();">
+									<span>
+										数据
+									</span>
+								</a>
+							</li>
+							<li>
+								<a id="c6" href="javascript:void(0);" onclick="window.location.href='#shell';window.location.reload();">
+									<span>
+										控制
+									</span>
+								</a>
+							</li>
+							<li>		
+								<a id="c7" href="javascript:void(0);" onclick="window.location.href='#tool';window.location.reload();">
+									<span>
+										工具
+									</span>
+								</a>
+							</li>		
+							<li>							
+								<a id="c8" href="javascript:void(0);" onclick="window.location.href='#site';window.location.reload();">
+									<span>
+										站点
+									</span>
+								</a>
+							</li>
+							<li>
+								<a id="c9" href="javascript:void(0);" onclick="window.location.href='#help';window.location.reload();">
+									<span>
+										帮助
+									</span>
+								</a>
+							</li>
+						</ul>
+						<div class="clear">
+						</div>
+					</div>
+					<div id="xsubmenu" style="position: inherit;width: 100%;z-index: 1;top: 0;left: 0;">
+						<script>
+							var tplname;
+							switch (tpl) {
+							case "settings":
+								document.getElementById("c1").className = "selected";
+								tplname = "设定";
+								break;
+							case "users":
+								document.getElementById("c2").className = "selected";
+								tplname = "配置";
+								break;
+							case "articles":
+								document.getElementById("c3").className = "selected";
+								tplname = "模板";
+								break;
+							case "file":
+								document.getElementById("c4").className = "selected";
+								tplname = "文件";
+								break;
+							case "db":
+								document.getElementById("c5").className = "selected";
+								tplname = "数据";
+								break;			
+							case "shell":
+								document.getElementById("c6").className = "selected";
+								tplname = "控制";
+								break;		
+							case "tool":
+								document.getElementById("c7").className = "selected";
+								tplname = "工具";
+								break;										
+							case "site":
+								document.getElementById("c8").className = "selected";
+								tplname = "站点";
+								break;
+							case "help":
+								document.getElementById("c9").className = "selected";
+								tplname = "帮助";
+								break;
+							default:
+								document.getElementById("c1").className = "selected";
+								tplname = "设定";
+							}
+							document.title=tplname + " - Copy Cat | Powered By Gentle";
+							$.get("resources/tpl/" + tpl + ".submenu.tpl",
+							function(data, textStatus) {
+								if (data) {
+									document.getElementById("xsubmenu").innerHTML = data;
+								}
+							});
+						</script>
+					</div>
+					<div id="desc">
+						<div class="body" id="body">
+							<script>
+								$.get("resources/tpl/" + tpl + ".body.tpl",
+								function(data, textStatus) {
+									if (data) {
+										document.getElementById("body").innerHTML = data;
+										$('input.checkbox').customcheckbox();
+										$('.module.search input').emptyonclick();
+										try {
+											$.get("resources/tpl/" + tpl + ".run.tpl",
+											function(data, textStatus) {
+												if (data) {
+													eval(data);
+												}
+											});
+										} catch(e) {}
+									}
+								});
+							</script>
+						</div>
+						<div class="clear">
+						</div>
+					</div>
+					<div class="clear">
+					</div>
+					<div id="body_footer">
+						<div id="bottom_left">
+							<div id="bottom_right">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+		<div id="footer">
+			<p class="last">
+				Copyright 2014~2015 - Copy Cat - Built by
+				<a target="_blank" href="https://plus.google.com/100299352627766095018/">
+					Gentle
+				</a>
+			</p>
+			<script>
+				gotoTop();
+			</script>
+		</div>
+	</body>
+
+</html>

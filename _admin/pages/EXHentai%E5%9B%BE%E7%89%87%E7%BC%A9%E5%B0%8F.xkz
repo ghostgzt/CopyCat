@@ -1,0 +1,124 @@
+<?php
+//readfile($_SERVER['QUERY_STRING']);
+//die();
+$maxwidth=320;
+$maxheight=320;
+$quality=100;
+$type=null;
+$outfile=null;
+if(@$_SERVER['QUERY_STRING']){
+	$url=$_SERVER['QUERY_STRING'];
+	$preinfo=@get_headers($url, 1);	
+	if(($preinfo["Content-Length"]>3*1024*1024)||($preinfo["Content-Type"]=="image/gif")){
+
+		$p=$_SERVER['QUERY_STRING'];
+
+echo getres($p,$p);
+		
+	}
+	$filename=tempnam(sys_get_temp_dir(), 'EXPic');
+	copy($url,$filename);
+	if(!$maxwidth&&!$maxheight){$maxwidth=200;$maxheight=200;}			
+	$r=picresize($filename,$maxwidth,$maxheight,$quality,$type,$outfile);
+	if(!$r){
+		header('Content-Type: image/png');
+		die(base64_decode("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABGdBTUEAALGPC/xhBQAAAANQTFRF////p8QbyAAAAApJREFUeNpjYAAAAAIAAeUn3vwAAAAASUVORK5CYII="));
+	}		
+	@unlink($filename);			
+}
+function getres($url,$reff){
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_REFERER, 'http://www.baidu.com/');
+$output = curl_exec($ch);
+curl_close($ch);
+return $output;
+}
+	function picresize($filename,$maxwidth,$maxheight,$quality=70,$type=null,$outfile=null,$imgstring=null){
+		ini_set('gd.jpeg_ignore_warning', 1);
+		if(!$filename){return false;}
+		if(!$maxwidth&&!$maxheight){return false;}
+		$imginfo= @getimagesize($filename); 
+		if(!$type){
+			$type= @basename(@end($imginfo)); 
+			!$type&&$type=@end(@explode(".",$filename));
+		}
+		// Set a maximum height and width
+		$width = $maxwidth;
+		$height = $maxheight;
+		// Get new dimensions
+		list($width_orig, $height_orig) = $imginfo;
+		if(!$width_orig||!$height_orig){
+			readfile($filename);
+			return false;
+		}
+		$ratio_orig = $width_orig/$height_orig;
+		if(!$width||!$height){
+			!$width&&$width = $height*$ratio_orig;
+			!$height&&$height = $width/$ratio_orig;
+		}else{
+			if(($width>$width_orig)&&($height>$height_orig)){
+				$width=$width_orig;
+				$height=$height_orig;
+			}else{
+				if ($width/$height > $ratio_orig) {
+				   $width = $height*$ratio_orig;
+				} else {
+				   $height = $width/$ratio_orig;
+				}			
+			}
+		}
+		//die($width."*".$height);
+		// Resample
+		$image_p = @imagecreatetruecolor($width, $height);
+		switch(strtolower($type)){ 
+			case "gif": 
+				$image = @imagecreatefromgif($filename); 
+				imagecolortransparent($image,imagecolorallocate($dstim,255,255,255));
+			break; 
+			default:		
+			case "jpeg" : 		
+			case "jpg" : 
+				$image = @imagecreatefromjpeg($filename); 
+			break; 
+			case "png" : 
+				imagealphablending($image_p,false);
+				imagesavealpha($image_p,true);				
+				$image = @imagecreatefrompng($filename); 
+				imagesavealpha($image,true);		
+			break; 
+			case "bmp" : 
+				$image = @imagecreatefromwbmp($filename); 
+			break; 
+			case "webp":
+				$image = @imagecreatefromwebp($filename);
+			break;
+		}
+		if(!$image){return false;}
+		@imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
+		$imgstring&&imagestring($image_p, @$imgstring["fontsize"]?@$imgstring["fontsize"]:20, @$imgstring["x"]?@$imgstring["x"]:0, @$imgstring["y"]?@$imgstring["y"]:0, @$imgstring["content"]?@$imgstring["content"]:"", @$imgstring["color"]?@$imgstring["color"]:0xFFFFFF);
+		// Output
+		!$outfile&&header('Content-Type: image/'.$type);
+		switch(strtolower($type)){ 
+			case "gif": 
+				$r=@imagegif($image_p, $outfile);
+			break; 
+			default:		
+			case "jpeg" : 		
+			case "jpg" : 
+				$r=@imagejpeg($image_p, $outfile, $quality);
+			break; 
+			case "png" : 
+				$r=@imagepng($image_p, $outfile);
+			break; 
+			case "bmp" : 
+				$r=@imagewbmp($image_p, $outfile, $quality);
+			break; 
+			case "webp":
+				$r=@imagewebp($image_p, $outfile);
+			break;
+		}
+		@imagedestroy($image_p) ;	
+		return $r;
+	}

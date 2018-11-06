@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<link rel="shortcut icon" href="favicon.ico" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="keywords" content="" />
+		<meta name="description" content="" />
+		<title>
+			Login - Copy Cat | Powered By Gentle
+		</title>
+		<script src="resources/js/jquery.js" type="text/javascript" charset="utf-8">
+		</script>
+		<script src="resources/js/global.js" type="text/javascript" charset="utf-8">
+		</script>
+		<script src="resources/js/modal.js" type="text/javascript" charset="utf-8">
+		</script>
+		<script src="resources/js/md5.js" type="text/javascript" charset="utf-8">
+		</script>
+		<link rel="stylesheet" href="resources/css/style.css" type="text/css" media="screen"
+		charset="utf-8" />
+		<style>.body {padding:10px;}</style>
+		<script>
+			function setCookie(name, value) {
+				var Days = 30;
+				var exp = new Date();
+				exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
+				document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
+			}
+			function getCookie(name) {
+				var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+				if (arr = document.cookie.match(reg)) return unescape(arr[2]);
+				else return null;
+			}
+			function delCookie(name) {
+				var exp = new Date();
+				exp.setTime(exp.getTime() - 1);
+				var cval = getCookie(name);
+				if (cval != null) document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
+			}
+			function verify() {
+				$.post("index.php", {
+					Action: "post",
+					verify: 1
+				},
+				function(data, textStatus) {
+					if ((document.getElementById("username").value == data.user) && (hex_md5(data.salt + hex_md5(document.getElementById("password").value) + data.salt) == data.passwd)) {
+						setCookie("copycat_user", document.getElementById("username").value);
+						setCookie("copycat_passwd", hex_md5(document.getElementById("password").value));
+						window.location.href = "index.html";
+					} else {
+						alert("验证错误！")
+					}
+				},
+				"json");
+			}
+			function autologin() {
+				$.post("index.php", {
+					verify: "1"
+				},
+				function(data, textStatus) {
+					if ((getCookie("copycat_user") == data.user) && (hex_md5(data.salt + getCookie("copycat_passwd") + data.salt) == data.passwd)) {
+						window.location.href = "index.html";
+					}
+				},
+				"json");
+			}
+			autologin();
+			document.onkeydown = function(event) {
+				var e = event || window.event || arguments.callee.caller.arguments[0];
+				if (e && e.keyCode == 27) { // 按 Esc 
+					window.open('../','_top');
+				}
+				if (e && e.keyCode == 13) { // enter 键
+					verify();
+				}
+			};
+		</script>
+	</head>
+	<body>
+		<div id="wrapper_login">
+			<img src="resources/images/cat.gif" alt="Logo">
+			<img height="80px" src="resources/images/logo.gif" alt="Logo" width="200px">
+			<div id="menu">
+				<div id="left">
+				</div>
+				<div id="right">
+				</div>
+				<h2>
+					Copy Cat Login
+				</h2>
+				<div class="clear">
+				</div>
+			</div>
+			<div id="desc">
+				<div class="body">
+					<div class="col w10 last bottomlast">
+						<form action="index.php" onsubmit="return false;" method="post">
+							<p>
+								<label for="username">
+									Username:
+								</label>
+								<input type="text" name="username" id="username" value="" style="width:94%"
+								class="text" />
+								<br />
+							</p>
+							<p>
+								<label for="password">
+									Password:
+								</label>
+								<input type="password" name="password" id="password" value="" style="width:94%"
+								class="text" />
+								<br />
+							</p>
+							<p class="last">
+								<input type="button" value="Login" class="novisible" />
+								<a href="javascript:void(0);" onclick="verify();" class="button">
+									<small class="icon play">
+									</small>
+									<span>
+										Login
+									</span>
+								</a>
+								<a href="javascript:void(0);" onclick="window.open('../','_top');" class="button">
+									<small class="icon flatscreen">
+									</small>
+									<span>
+										Live Site
+									</span>
+								</a>
+								<br />
+							</p>
+							<div class="clear">
+							</div>
+						</form>
+					</div>
+					<div class="clear">
+					</div>
+				</div>
+				<div class="clear">
+				</div>
+				<div id="body_footer">
+					<div id="bottom_left">
+						<div id="bottom_right">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>

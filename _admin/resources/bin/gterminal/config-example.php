@@ -1,0 +1,17 @@
+<?
+	
+	// SHELL LOGIN CREDENTIALS
+	define('SHELL_USERNAME', 'root');
+	define('SHELL_PASSWORD', '');
+	
+	// MYSQL PLUGIN DEFAULT LOGIN CREDENTIALS
+	define('MYSQL_DEFAULT_USERNAME', 'root');
+	define('MYSQL_DEFAULT_PASSWORD', '');
+	define('MYSQL_DEFAULT_HOSTNAME', 'localhost');
+	
+	// ORACLE PLUGIN DEFAULT LOGIN CREDENTIALS
+	define('ORACLE_DEFAULT_USERNAME', 'scott');
+	define('ORACLE_DEFAULT_PASSWORD', 'tiger');
+	define('ORACLE_DEFAULT_HOSTNAME', 'localhost/orcl');
+	
+?>
